@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\IngredientRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
@@ -22,8 +22,8 @@ class Ingredient
     private ?string $name;
 
     #[ORM\Column]
-    #[Assert\Positive()]
     #[Assert\NotNull()]
+    #[Assert\Positive()]
     #[Assert\LessThan(200)]
     private ?float $price;
 
@@ -77,5 +77,9 @@ class Ingredient
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+    public function __toString()
+    {
+        return $this->name;
     }
 }

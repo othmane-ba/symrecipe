@@ -33,7 +33,7 @@ class IngredientController extends AbstractController
         return $this->render('pages/ingredient/index.html.twig', ['ingredients'=>$ingredients]);
     }
     /**
-     * This controller show a form which creates an ingredient
+     * This controller allows us to create a new ingredient
      *
      * @param Request $request
      * @param EntityManagerInterface $manager
@@ -51,12 +51,20 @@ class IngredientController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'success',
-                'Votre ingrédient a été créer avex succès !'
+                'Votre ingrédient a été créer avec succès !'
             );
             return $this->redirectToRoute('ingredient.index');
         }
         return $this->render('pages/ingredient/new.html.twig',['form' => $form->createView()]);
     }
+    /**
+     * This controller allows us to edit an ingredient
+     *
+     * @param Ingredient $ingredient
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/ingredient/edition/{id}','ingredient.edit',methods:['GET','POST'])]
     public function edit(Ingredient $ingredient,Request $request,EntityManagerInterface $manager):Response
     {
@@ -68,7 +76,7 @@ class IngredientController extends AbstractController
             $manager->flush();
             $this->addFlash(
                 'success',
-                'Votre ingrédient a été modifier avex succès !'
+                'Votre ingrédient a été modifier avec succès !'
             );
             return $this->redirectToRoute('ingredient.index');
         }
@@ -76,6 +84,13 @@ class IngredientController extends AbstractController
             'form'=>$form->createView() 
         ]);
     }
+    /**
+     * This controller allows us to delete an ingredient
+     *
+     * @param EntityManagerInterface $manager
+     * @param Ingredient $ingredient
+     * @return Response
+     */
     #[Route('ingredient/suppression/{id}','ingredient.delete',methods:['GET'])]
     public function delete(EntityManagerInterface $manager,Ingredient $ingredient):Response
     {
@@ -83,7 +98,7 @@ class IngredientController extends AbstractController
         $manager->flush();
         $this->addFlash(
             'success',
-            'Votre ingrédient a été supprimer avex succès !'
+            'Votre ingrédient a été supprimer avec succès !'
         );
         return $this->redirectToRoute('ingredient.index');
     }

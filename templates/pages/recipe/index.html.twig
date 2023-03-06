@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Symrecipe - Mes recettes{% endblock %}
+{% block body %}
+<div class="container mt-4">
+    {% if not recipes.items is same as([]) %}
+        <h1>Mes recettes</h1>
+
+        <a href="{{path('recipe.new')}}" class="btn btn-primary">Créer une recette</a>
+
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success mt-4">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        <div class="count">
+        <h4>
+        Il y'a {{ recipes.getTotalItemCount }} recettes au total</h4>
+        </div>
+        <table class="table table-hover table-primary">
+        <thead>
+            <tr>
+            <th scope="col">Numéro</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Prix</th>
+            <th scope="col">Difficulté</th>
+            <th scope="col">Date de création</th>
+            <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for recipe in recipes %}
+            <tr class="table-light">
+            <th scope="row">{{recipe.id}}</th>
+            <td>{{recipe.name}}</td>
+            <td>{{recipe.price is same as(null)?'Non renseigné':recipe.price}}</td>
+            <td>{{recipe.difficulty is same as(null)?'Non renseigné':recipe.difficulty}}</td>
+            <td>{{recipe.createdAt|date('d/m/Y') }}</td>
+            <td>
+                <a href="{{path('recipe.edit',{id:recipe.id})}}" class="btn btn-warning">Modifier</a>
+                <a href="{{path('recipe.delete',{id:recipe.id})}}" class="btn btn-danger">Supprimer</a>
+            </td>
+            {% endfor %}
+            </tr>
+        </tbody>
+        </table>
+        {# display navigation #}
+        <div class="navigation d-flex justify-content-center mt-4">
+            {{ knp_pagination_render(recipes) }}
+        </div>
+    {% else %}
+    <h4>
+        Il n'y a aucun recettes</h4>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
